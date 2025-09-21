@@ -39,32 +39,316 @@ const appData = {
   }
 };
 
-// Global variables
+// PWA Global Variables
+let deferredPrompt = null;
+let isInstalled = false;
+let isOnline = navigator.onLine;
+let swRegistration = null;
+
+// App Global variables
 let currentScreen = 'dashboard-screen';
 let salesChart = null;
+let lastTouchEnd = 0;
 
-// Screen Navigation
+// CRITICAL: Create and serve manifest.json dynamically
+function createManifestJson() {
+  const manifestData = {
+    "name": "ABC Trading Co. - Distributor Management",
+    "short_name": "ABC Trading",
+    "description": "Complete distributor management application for ABC Trading Co. - Manage inventory, orders, accounts, and sales analytics with real-time data synchronization and offline capabilities.",
+    "start_url": "/",
+    "id": "/abc-trading-distributor-app",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#fcfcf9",
+    "theme_color": "#218098",
+    "icons": [
+      {
+        "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9IiMyMTgwOTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMjQiIHk9IjQ4IiB3aWR0aD0iMTQ0IiBoZWlnaHQ9Ijk2IiByeD0iMTIiIGZpbGw9IiNmZmYiLz4KICA8dGV4dCB4PSI5NiIgeT0iODAiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+QUJDPC90ZXh0PgogIDx0ZXh0IHg9Ijk2IiB5PSIxMDQiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+VHJhZGluZzwvdGV4dD4KICA8cGF0aCBkPSJNNDggMTM2IEw3MiAxMDggTDk2IDEzNiBMMTIwIDEwOCBMMTQ0IDEzNiIgc3Ryb2tlPSIjMjE4MDk4IiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiLz4KPC9zdmc+",
+        "sizes": "192x192",
+        "type": "image/svg+xml",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9IiMyMTgwOTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iNjQiIHk9IjEyOCIgd2lkdGg9IjM4NCIgaGVpZ2h0PSIyNTYiIHJ4PSIzMiIgZmlsbD0iI2ZmZiIvPgogIDx0ZXh0IHg9IjI1NiIgeT0iMjEwIiBmaWxsPSIjMjE4MDk4IiBmb250LXNpemU9IjY0IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiPkFCQzwvdGV4dD4KICA8dGV4dCB4PSIyNTYiIHk9IjI3MCIgZmlsbD0iIzIxODA5OCIgZm9udC1zaXplPSIzNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIj5UcmFkaW5nPC90ZXh0PgogIDxwYXRoIGQ9Ik0xMjggMzYwIEwxOTIgMjg4IEwyNTYgMzYwIEwzMjAgMjg4IEwzODQgMzYwIiBzdHJva2U9IiMyMTgwOTgiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4=",
+        "sizes": "512x512",
+        "type": "image/svg+xml",
+        "purpose": "any maskable"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjU2OCIgdmlld0JveD0iMCAwIDMyMCA1NjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjMyMCIgaGVpZ2h0PSI1NjgiIGZpbGw9IiNmY2ZjZjkiLz4KICA8dGV4dCB4PSIyNCIgeT0iNDQiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSI2MDAiPldlbGNvbWUgYmFjaywgUmFqZXNoITwvdGV4dD4KPC9zdmc+",
+        "sizes": "320x568",
+        "type": "image/svg+xml",
+        "form_factor": "narrow",
+        "label": "Dashboard view"
+      }
+    ],
+    "categories": ["business", "finance", "productivity"],
+    "lang": "en",
+    "dir": "ltr",
+    "scope": "/",
+    "prefer_related_applications": false
+  };
+
+  return JSON.stringify(manifestData, null, 2);
+}
+
+// Serve manifest.json with correct MIME type
+function serveManifestJson() {
+  const manifestContent = createManifestJson();
+  const blob = new Blob([manifestContent], { type: 'application/manifest+json' });
+  const manifestUrl = URL.createObjectURL(blob);
+  
+  const manifestLink = document.querySelector('link[rel="manifest"]');
+  if (manifestLink) {
+    manifestLink.href = manifestUrl;
+  }
+  
+  console.log('Manifest.json served with correct MIME type');
+}
+
+// PWA Service Worker Registration
+async function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    try {
+      const swCode = `
+        const CACHE_NAME = 'abc-trading-v2.0.0';
+        const urlsToCache = [
+          '/',
+          '/index.html',
+          '/style.css',
+          '/app.js',
+          'https://cdn.jsdelivr.net/npm/chart.js'
+        ];
+
+        self.addEventListener('install', (event) => {
+          event.waitUntil(
+            caches.open(CACHE_NAME)
+              .then((cache) => cache.addAll(urlsToCache))
+              .then(() => self.skipWaiting())
+          );
+        });
+
+        self.addEventListener('fetch', (event) => {
+          if (event.request.url.includes('manifest.json')) {
+            event.respondWith(
+              new Response(${JSON.stringify(createManifestJson())}, {
+                headers: {
+                  'Content-Type': 'application/manifest+json',
+                  'Cache-Control': 'max-age=3600'
+                }
+              })
+            );
+            return;
+          }
+
+          event.respondWith(
+            caches.match(event.request)
+              .then((response) => {
+                if (response) {
+                  return response;
+                }
+                return fetch(event.request).catch(() => {
+                  if (event.request.mode === 'navigate') {
+                    return caches.match('/');
+                  }
+                });
+              })
+          );
+        });
+
+        self.addEventListener('activate', (event) => {
+          event.waitUntil(
+            caches.keys().then((cacheNames) => {
+              return Promise.all(
+                cacheNames.map((cacheName) => {
+                  if (cacheName !== CACHE_NAME) {
+                    return caches.delete(cacheName);
+                  }
+                })
+              );
+            }).then(() => self.clients.claim())
+          );
+        });
+      `;
+      
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const swURL = URL.createObjectURL(blob);
+      
+      swRegistration = await navigator.serviceWorker.register(swURL);
+      console.log('Service Worker registered successfully');
+      
+    } catch (error) {
+      console.log('Service Worker registration failed:', error);
+    }
+  }
+}
+
+// PWA Install Prompt Management
+function initializeInstallPrompt() {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    showInstallBanner();
+  });
+
+  window.addEventListener('appinstalled', () => {
+    isInstalled = true;
+    hideInstallBanner();
+    updateInstallStatus();
+    showSuccessMessage('App installed successfully! 🎉');
+    deferredPrompt = null;
+  });
+
+  if (window.matchMedia('(display-mode: standalone)').matches || 
+      window.navigator.standalone === true) {
+    isInstalled = true;
+    updateInstallStatus();
+  } else {
+    // Force show install banner for testing if not installed
+    setTimeout(() => {
+      if (!sessionStorage.getItem('installDismissed')) {
+        showInstallBanner();
+      }
+    }, 2000);
+  }
+}
+
+function showInstallBanner() {
+  if (isInstalled) return;
+  
+  const banner = document.getElementById('installBanner');
+  if (banner) {
+    banner.classList.remove('hidden');
+  }
+}
+
+function hideInstallBanner() {
+  const banner = document.getElementById('installBanner');
+  if (banner) {
+    banner.classList.add('hidden');
+  }
+}
+
+async function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log('Install prompt result:', outcome);
+    deferredPrompt = null;
+    hideInstallBanner();
+  } else {
+    showSuccessMessage('App installation not available in this browser');
+  }
+}
+
+function updateInstallStatus() {
+  const installText = document.getElementById('installText');
+  const installStatus = document.getElementById('installStatus');
+  const installationStatus = document.getElementById('installationStatus');
+  
+  if (isInstalled) {
+    if (installText) installText.textContent = 'Installed';
+    if (installStatus) installStatus.textContent = '✅';
+    if (installationStatus) installationStatus.textContent = 'PWA';
+  } else {
+    if (installText) installText.textContent = 'PWA Ready';
+    if (installStatus) installStatus.textContent = '📱';
+    if (installationStatus) installationStatus.textContent = 'Browser';
+  }
+}
+
+// Network Status Management
+function initializeNetworkStatus() {
+  updateConnectionStatus();
+  
+  window.addEventListener('online', () => {
+    isOnline = true;
+    updateConnectionStatus();
+    hideOfflineIndicator();
+    showSuccessMessage('You\'re back online! 🌐');
+  });
+  
+  window.addEventListener('offline', () => {
+    isOnline = false;
+    updateConnectionStatus();
+    showOfflineIndicator();
+    showErrorMessage('You\'re offline. Some features may be limited. 📵');
+  });
+}
+
+function updateConnectionStatus() {
+  const statusElement = document.getElementById('connectionStatus');
+  const offlineText = document.getElementById('offlineText');
+  const offlineStatus = document.getElementById('offlineStatus');
+  
+  if (statusElement) {
+    statusElement.textContent = isOnline ? 'Online' : 'Offline';
+  }
+  
+  if (offlineText) {
+    offlineText.textContent = isOnline ? 'Online' : 'Offline';
+  }
+  
+  if (offlineStatus) {
+    offlineStatus.textContent = isOnline ? '🌐' : '📵';
+  }
+  
+  document.body.classList.toggle('offline', !isOnline);
+}
+
+function showOfflineIndicator() {
+  const indicator = document.getElementById('offlineIndicator');
+  if (indicator) {
+    indicator.classList.remove('hidden');
+  }
+}
+
+function hideOfflineIndicator() {
+  const indicator = document.getElementById('offlineIndicator');
+  if (indicator) {
+    indicator.classList.add('hidden');
+  }
+}
+
+// CRITICAL FIX: Screen Navigation - Global scope
 function showScreen(screenId) {
+  console.log('Navigating to screen:', screenId);
+  
   // Hide all screens
   document.querySelectorAll('.screen').forEach(screen => {
     screen.classList.remove('active');
   });
   
   // Show selected screen
-  document.getElementById(screenId).classList.add('active');
+  const targetScreen = document.getElementById(screenId);
+  if (targetScreen) {
+    targetScreen.classList.add('active');
+    console.log('Screen activated:', screenId);
+  } else {
+    console.error('Screen not found:', screenId);
+  }
   
   // Update navigation
   document.querySelectorAll('.nav-item').forEach(item => {
     item.classList.remove('active');
   });
   
-  document.querySelector(`[data-screen="${screenId}"]`).classList.add('active');
+  const activeNavItem = document.querySelector(`[data-screen="${screenId}"]`);
+  if (activeNavItem) {
+    activeNavItem.classList.add('active');
+  }
   
   currentScreen = screenId;
   
   // Initialize screen-specific content
   initializeScreen(screenId);
 }
+
+// Make showScreen globally accessible
+window.showScreen = showScreen;
 
 // Initialize screen content
 function initializeScreen(screenId) {
@@ -81,6 +365,10 @@ function initializeScreen(screenId) {
     case 'accounts-screen':
       populateAccounts();
       break;
+    case 'profile-screen':
+      updateConnectionStatus();
+      updateInstallStatus();
+      break;
   }
 }
 
@@ -88,61 +376,89 @@ function initializeScreen(screenId) {
 function initializeDashboard() {
   if (salesChart) {
     salesChart.destroy();
+    salesChart = null;
   }
-  createSalesChart();
+  
+  setTimeout(() => {
+    createSalesChart();
+  }, 200);
 }
 
 function createSalesChart() {
-  const ctx = document.getElementById('salesChart').getContext('2d');
+  const canvas = document.getElementById('salesChart');
+  if (!canvas) {
+    console.error('Sales chart canvas not found');
+    return;
+  }
+  
+  const ctx = canvas.getContext('2d');
   const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   
-  salesChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: weekDays,
-      datasets: [{
-        label: 'Daily Sales (₹)',
-        data: appData.dashboard.weeklyData,
-        backgroundColor: '#1FB8CD',
-        borderColor: '#1FB8CD',
-        borderWidth: 0,
-        borderRadius: 8,
-        borderSkipped: false,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false
-        }
+  try {
+    salesChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: weekDays,
+        datasets: [{
+          label: 'Daily Sales (₹)',
+          data: appData.dashboard.weeklyData,
+          backgroundColor: ['#1FB8CD', '#FFC185', '#B4413C', '#ECEBD5', '#5D878F', '#DB4545', '#D2BA4C'],
+          borderColor: ['#1FB8CD', '#FFC185', '#B4413C', '#ECEBD5', '#5D878F', '#DB4545', '#D2BA4C'],
+          borderWidth: 0,
+          borderRadius: 8,
+          borderSkipped: false,
+        }]
       },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            callback: function(value) {
-              return '₹' + (value/1000) + 'k';
-            }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
           },
-          grid: {
-            color: 'rgba(0,0,0,0.05)'
+          tooltip: {
+            enabled: true,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+            callbacks: {
+              label: function(context) {
+                return `Sales: ₹${context.parsed.y.toLocaleString()}`;
+              }
+            }
           }
         },
-        x: {
-          grid: {
-            display: false
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return '₹' + (value/1000) + 'k';
+              }
+            },
+            grid: {
+              color: 'rgba(0,0,0,0.05)'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
           }
         }
       }
-    }
-  });
+    });
+    console.log('Chart created successfully');
+  } catch (error) {
+    console.error('Error creating chart:', error);
+  }
 }
 
 // Inventory Functions
 function populateInventory() {
   const inventoryList = document.getElementById('inventoryList');
+  if (!inventoryList) return;
+  
   inventoryList.innerHTML = '';
   
   appData.inventory.forEach(item => {
@@ -168,7 +484,6 @@ function populateInventory() {
     inventoryList.appendChild(itemElement);
   });
   
-  // Setup search functionality
   setupInventorySearch();
 }
 
@@ -180,6 +495,8 @@ function getStockStatus(current, minimum) {
 
 function setupInventorySearch() {
   const searchInput = document.getElementById('inventorySearch');
+  if (!searchInput) return;
+  
   searchInput.addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase();
     const items = document.querySelectorAll('.inventory-item');
@@ -198,6 +515,8 @@ function setupInventorySearch() {
 // Orders Functions
 function populateOrders() {
   const ordersList = document.getElementById('ordersList');
+  if (!ordersList) return;
+  
   ordersList.innerHTML = '';
   
   appData.orders.forEach(order => {
@@ -238,9 +557,11 @@ function populateCustomerSelect() {
   }
 }
 
+// Order Tab Function - Global scope
 function showOrderTab(tabType) {
   const tabButtons = document.querySelectorAll('.tab-btn');
   tabButtons.forEach(btn => btn.classList.remove('active'));
+  
   event.target.classList.add('active');
   
   const orderItems = document.querySelectorAll('.order-item');
@@ -258,9 +579,13 @@ function showOrderTab(tabType) {
   });
 }
 
+window.showOrderTab = showOrderTab;
+
 // Accounts Functions
 function populateAccounts() {
   const customersList = document.getElementById('customersList');
+  if (!customersList) return;
+  
   customersList.innerHTML = '';
   
   appData.customers.forEach(customer => {
@@ -288,44 +613,114 @@ function populateAccounts() {
   });
 }
 
-// Modal Functions
+// CRITICAL FIX: Modal Functions - Global scope
 function showAddItemForm() {
-  document.getElementById('addItemModal').classList.remove('hidden');
+  const modal = document.getElementById('addItemModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    console.log('Add item modal opened');
+  }
 }
 
 function hideAddItemForm() {
-  document.getElementById('addItemModal').classList.add('hidden');
-  document.getElementById('addItemForm').reset();
+  const modal = document.getElementById('addItemModal');
+  const form = document.getElementById('addItemForm');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+  if (form) {
+    form.reset();
+  }
 }
 
 function showCreateOrderForm() {
-  document.getElementById('createOrderModal').classList.remove('hidden');
+  const modal = document.getElementById('createOrderModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    console.log('Create order modal opened');
+  }
 }
 
 function hideCreateOrderForm() {
-  document.getElementById('createOrderModal').classList.add('hidden');
-  document.getElementById('createOrderForm').reset();
+  const modal = document.getElementById('createOrderModal');
+  const form = document.getElementById('createOrderForm');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+  if (form) {
+    form.reset();
+  }
 }
 
 function showRecordPaymentForm() {
-  document.getElementById('recordPaymentModal').classList.remove('hidden');
+  const modal = document.getElementById('recordPaymentModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    console.log('Record payment modal opened');
+  }
 }
 
 function hideRecordPaymentForm() {
-  document.getElementById('recordPaymentModal').classList.add('hidden');
-  document.getElementById('recordPaymentForm').reset();
+  const modal = document.getElementById('recordPaymentModal');
+  const form = document.getElementById('recordPaymentForm');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+  if (form) {
+    form.reset();
+  }
 }
 
+// Make modal functions globally accessible
+window.showAddItemForm = showAddItemForm;
+window.hideAddItemForm = hideAddItemForm;
+window.showCreateOrderForm = showCreateOrderForm;
+window.hideCreateOrderForm = hideCreateOrderForm;
+window.showRecordPaymentForm = showRecordPaymentForm;
+window.hideRecordPaymentForm = hideRecordPaymentForm;
+
+// Other Global Functions
+window.checkForUpdates = function() {
+  const button = event.target;
+  button.classList.add('loading');
+  button.textContent = 'Checking...';
+  
+  setTimeout(() => {
+    button.classList.remove('loading');
+    button.textContent = 'Check for Updates';
+    
+    if (swRegistration) {
+      swRegistration.update();
+      showSuccessMessage('Checked for updates successfully!');
+    } else {
+      showErrorMessage('Unable to check for updates.');
+    }
+  }, 2000);
+};
+
+window.clearAppData = function() {
+  if (confirm('Are you sure you want to clear all app data? This action cannot be undone.')) {
+    localStorage.clear();
+    sessionStorage.clear();
+    showSuccessMessage('App data cleared successfully!');
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
+};
+
 // Form Handlers
-function handleAddItem(formData) {
+function handleAddItem(e) {
+  e.preventDefault();
+  const inputs = e.target.querySelectorAll('input, select');
   const newItem = {
     id: appData.inventory.length + 1,
-    name: formData.get('name') || formData[0].value,
-    stock: parseInt(formData.get('stock') || formData[1].value),
-    price: parseFloat(formData.get('price') || formData[2].value),
-    minStock: 50, // Default minimum stock
-    category: formData.get('category') || formData[3].value,
-    expiry: "2024-12-31" // Default expiry
+    name: inputs[0].value,
+    stock: parseInt(inputs[1].value),
+    price: parseFloat(inputs[2].value),
+    minStock: 50,
+    category: inputs[3].value,
+    expiry: "2024-12-31"
   };
   
   appData.inventory.push(newItem);
@@ -334,15 +729,17 @@ function handleAddItem(formData) {
   showSuccessMessage('Item added successfully!');
 }
 
-function handleCreateOrder(formData) {
+function handleCreateOrder(e) {
+  e.preventDefault();
+  const inputs = e.target.querySelectorAll('input, select, textarea');
   const newOrder = {
     id: Math.max(...appData.orders.map(o => o.id)) + 1,
-    customer: formData.get('customer') || formData[0].value,
-    items: formData.get('items') || formData[1].value,
-    total: parseFloat(formData.get('total') || formData[2].value),
+    customer: inputs[0].value,
+    items: inputs[1].value,
+    total: parseFloat(inputs[2].value),
     status: 'pending',
     date: new Date().toISOString().split('T')[0],
-    deliveryDate: formData.get('deliveryDate') || formData[3].value
+    deliveryDate: inputs[3].value
   };
   
   appData.orders.push(newOrder);
@@ -351,9 +748,11 @@ function handleCreateOrder(formData) {
   showSuccessMessage('Order created successfully!');
 }
 
-function handleRecordPayment(formData) {
-  const customerName = formData.get('customer') || formData[0].value;
-  const amount = parseFloat(formData.get('amount') || formData[1].value);
+function handleRecordPayment(e) {
+  e.preventDefault();
+  const inputs = e.target.querySelectorAll('input, select');
+  const customerName = inputs[0].value;
+  const amount = parseFloat(inputs[1].value);
   
   const customer = appData.customers.find(c => c.name === customerName);
   if (customer) {
@@ -376,131 +775,88 @@ function formatDate(dateString) {
 }
 
 function showSuccessMessage(message) {
-  // Create and show success message
   const successDiv = document.createElement('div');
   successDiv.className = 'success-message';
   successDiv.textContent = message;
   
   const currentScreenEl = document.querySelector('.screen.active');
-  currentScreenEl.insertBefore(successDiv, currentScreenEl.firstChild);
-  
-  // Remove after 3 seconds
-  setTimeout(() => {
-    successDiv.remove();
-  }, 3000);
+  if (currentScreenEl) {
+    currentScreenEl.insertBefore(successDiv, currentScreenEl.firstChild);
+    
+    setTimeout(() => {
+      if (successDiv.parentNode) {
+        successDiv.remove();
+      }
+    }, 3000);
+  }
 }
 
 function showErrorMessage(message) {
-  // Create and show error message
   const errorDiv = document.createElement('div');
   errorDiv.className = 'error-message';
   errorDiv.textContent = message;
   
   const currentScreenEl = document.querySelector('.screen.active');
-  currentScreenEl.insertBefore(errorDiv, currentScreenEl.firstChild);
-  
-  // Remove after 3 seconds
-  setTimeout(() => {
-    errorDiv.remove();
-  }, 3000);
-}
-
-// Pull to refresh functionality
-let startY = 0;
-let currentY = 0;
-let pullDistance = 0;
-let isPulling = false;
-
-function initializePullToRefresh() {
-  const screens = document.querySelectorAll('.screen');
-  
-  screens.forEach(screen => {
-    screen.addEventListener('touchstart', handleTouchStart, { passive: true });
-    screen.addEventListener('touchmove', handleTouchMove, { passive: false });
-    screen.addEventListener('touchend', handleTouchEnd, { passive: true });
-  });
-}
-
-function handleTouchStart(e) {
-  startY = e.touches[0].clientY;
-}
-
-function handleTouchMove(e) {
-  currentY = e.touches[0].clientY;
-  pullDistance = currentY - startY;
-  
-  if (pullDistance > 0 && window.scrollY === 0) {
-    isPulling = true;
-    e.preventDefault();
+  if (currentScreenEl) {
+    currentScreenEl.insertBefore(errorDiv, currentScreenEl.firstChild);
     
-    if (pullDistance > 60) {
-      // Show refresh indicator
-      showPullToRefreshIndicator();
-    }
+    setTimeout(() => {
+      if (errorDiv.parentNode) {
+        errorDiv.remove();
+      }
+    }, 3000);
   }
 }
 
-function handleTouchEnd(e) {
-  if (isPulling && pullDistance > 60) {
-    // Trigger refresh
-    refreshCurrentScreen();
-  }
-  
-  hidePullToRefreshIndicator();
-  isPulling = false;
-  pullDistance = 0;
-}
-
-function showPullToRefreshIndicator() {
-  let indicator = document.querySelector('.pull-to-refresh');
-  if (!indicator) {
-    indicator = document.createElement('div');
-    indicator.className = 'pull-to-refresh';
-    indicator.textContent = 'Release to refresh';
-    document.body.appendChild(indicator);
-  }
-  indicator.classList.add('active');
-}
-
-function hidePullToRefreshIndicator() {
-  const indicator = document.querySelector('.pull-to-refresh');
-  if (indicator) {
-    indicator.classList.remove('active');
-    setTimeout(() => indicator.remove(), 300);
-  }
-}
-
-function refreshCurrentScreen() {
-  initializeScreen(currentScreen);
-  showSuccessMessage('Screen refreshed!');
-}
-
-// Initialize the app
+// Initialize the PWA app
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize dashboard by default
+  console.log('Initializing Enhanced PWA app...');
+  
+  // Serve manifest.json
+  serveManifestJson();
+  
+  // Initialize PWA features
+  registerServiceWorker();
+  initializeInstallPrompt();
+  initializeNetworkStatus();
+  
+  // Initialize all screens
   initializeDashboard();
   populateInventory();
   populateOrders();
   populateAccounts();
+  updateInstallStatus();
+  
+  // Setup install banner event listeners
+  const installBtn = document.getElementById('installBtn');
+  const dismissBtn = document.getElementById('dismissBtn');
+  
+  if (installBtn) {
+    installBtn.addEventListener('click', installApp);
+  }
+  
+  if (dismissBtn) {
+    dismissBtn.addEventListener('click', () => {
+      hideInstallBanner();
+      sessionStorage.setItem('installDismissed', 'true');
+    });
+  }
   
   // Setup form handlers
-  document.getElementById('addItemForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    handleAddItem(formData);
-  });
+  const addItemForm = document.getElementById('addItemForm');
+  if (addItemForm) {
+    addItemForm.addEventListener('submit', handleAddItem);
+  }
   
-  document.getElementById('createOrderForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    handleCreateOrder(formData);
-  });
+  const createOrderForm = document.getElementById('createOrderForm');
+  if (createOrderForm) {
+    createOrderForm.addEventListener('submit', handleCreateOrder);
+  }
   
-  document.getElementById('recordPaymentForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    handleRecordPayment(formData);
-  });
+  const recordPaymentForm = document.getElementById('recordPaymentForm');
+  if (recordPaymentForm) {
+    recordPaymentForm.addEventListener('submit', handleRecordPayment);
+  }
   
   // Setup modal close on backdrop click
   document.querySelectorAll('.modal').forEach(modal => {
@@ -511,38 +867,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // Initialize pull to refresh
-  initializePullToRefresh();
-  
   // Setup keyboard navigation
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      // Close any open modals
       document.querySelectorAll('.modal').forEach(modal => {
         modal.classList.add('hidden');
       });
     }
   });
+  
+  console.log('Enhanced PWA app initialized successfully!');
 });
 
-// Handle visibility change for screen refresh
-document.addEventListener('visibilitychange', function() {
-  if (!document.hidden) {
-    // Refresh current screen when app becomes visible
-    initializeScreen(currentScreen);
-  }
-});
-
-// Prevent zoom on double tap
-document.addEventListener('touchend', function(e) {
-  const now = new Date().getTime();
-  const timeSince = now - lastTouchEnd;
-  
-  if ((timeSince < 300) && (timeSince > 0)) {
-    e.preventDefault();
-  }
-  
-  lastTouchEnd = now;
-}, false);
-
-let lastTouchEnd = 0;
+console.log('ABC Trading Co. PWA loaded with complete functionality!');
