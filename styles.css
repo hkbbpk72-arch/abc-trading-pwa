@@ -738,7 +738,7 @@ select.form-control {
 }
 
 /* END PERPLEXITY DESIGN SYSTEM */
-/* Mobile-first minimal distributor app styles */
+/* Mobile-first PWA distributor app styles with enhanced PWA features */
 
 body {
   margin: 0;
@@ -750,6 +750,122 @@ body {
   line-height: var(--line-height-normal);
   color: var(--color-text);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* PWA Install Banner */
+.install-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+  padding: var(--space-12);
+  z-index: 1001;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-100%);
+  transition: transform var(--duration-normal) var(--ease-standard);
+}
+
+.install-banner:not(.hidden) {
+  transform: translateY(0);
+}
+
+.install-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-16);
+  max-width: var(--container-lg);
+  margin: 0 auto;
+}
+
+.install-info h3 {
+  margin: 0 0 var(--space-4) 0;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.install-info p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  opacity: 0.9;
+}
+
+.install-actions {
+  display: flex;
+  gap: var(--space-8);
+  flex-shrink: 0;
+}
+
+.install-actions .btn {
+  padding: var(--space-6) var(--space-12);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+}
+
+/* Offline Indicator */
+.offline-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-warning);
+  color: var(--color-btn-primary-text);
+  text-align: center;
+  padding: var(--space-8);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  z-index: 1000;
+  transform: translateY(-100%);
+  transition: transform var(--duration-normal) var(--ease-standard);
+}
+
+.offline-indicator:not(.hidden) {
+  transform: translateY(0);
+}
+
+/* Update Notification */
+.update-notification {
+  position: fixed;
+  bottom: 100px;
+  left: var(--space-16);
+  right: var(--space-16);
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+  padding: var(--space-16);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 1001;
+  transform: translateY(100%);
+  transition: transform var(--duration-normal) var(--ease-standard);
+}
+
+.update-notification:not(.hidden) {
+  transform: translateY(0);
+}
+
+.update-content h4 {
+  margin: 0 0 var(--space-8) 0;
+  font-size: var(--font-size-md);
+}
+
+.update-content p {
+  margin: 0 0 var(--space-12) 0;
+  font-size: var(--font-size-sm);
+  opacity: 0.9;
+}
+
+.update-actions {
+  display: flex;
+  gap: var(--space-8);
+}
+
+.update-actions .btn {
+  padding: var(--space-6) var(--space-12);
+  font-size: var(--font-size-sm);
 }
 
 /* Screen Management */
@@ -792,6 +908,34 @@ body {
   margin: var(--space-4) 0 0 0;
 }
 
+/* PWA Status Indicators */
+.pwa-status {
+  display: flex;
+  gap: var(--space-16);
+  margin-top: var(--space-24);
+  padding: var(--space-16);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-card-border);
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  flex: 1;
+}
+
+.status-icon {
+  font-size: 20px;
+}
+
+.status-text {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
 /* Metrics Grid */
 .metrics-grid {
   display: grid;
@@ -808,6 +952,7 @@ body {
   text-align: center;
   box-shadow: var(--shadow-sm);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
 }
 
 .metric-card:active {
@@ -917,6 +1062,11 @@ body {
   padding: var(--space-16);
   border: 1px solid var(--color-card-border);
   box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inventory-item:active {
+  transform: scale(0.99);
 }
 
 .item-header {
@@ -969,6 +1119,8 @@ body {
   display: flex;
   margin-bottom: var(--space-20);
   border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
 .tab-btn {
@@ -989,6 +1141,11 @@ body {
   border-bottom-color: var(--color-primary);
 }
 
+.tab-btn:hover {
+  color: var(--color-primary);
+  background: rgba(var(--color-teal-500-rgb), 0.05);
+}
+
 /* Orders List */
 .orders-list {
   display: flex;
@@ -1002,6 +1159,11 @@ body {
   padding: var(--space-16);
   border: 1px solid var(--color-card-border);
   box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-item:active {
+  transform: scale(0.99);
 }
 
 .order-header {
@@ -1081,6 +1243,11 @@ body {
   padding: var(--space-16);
   border: 1px solid var(--color-card-border);
   box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.customer-item:active {
+  transform: scale(0.99);
 }
 
 .customer-header {
@@ -1165,11 +1332,32 @@ body {
   gap: var(--space-12);
   font-size: var(--font-size-md);
   cursor: pointer;
+  user-select: none;
 }
 
 .setting-label input[type="checkbox"] {
   width: 20px;
   height: 20px;
+  accent-color: var(--color-primary);
+}
+
+/* PWA Info Section */
+.pwa-info {
+  margin-top: var(--space-24);
+}
+
+#connectionStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+#connectionStatus::before {
+  content: "🟢";
+}
+
+.offline #connectionStatus::before {
+  content: "🔴";
 }
 
 /* Modal Styles */
@@ -1185,10 +1373,14 @@ body {
   justify-content: center;
   z-index: 1000;
   padding: var(--space-16);
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--duration-normal) var(--ease-standard);
 }
 
-.modal.hidden {
-  display: none;
+.modal:not(.hidden) {
+  opacity: 1;
+  visibility: visible;
 }
 
 .modal-content {
@@ -1199,6 +1391,12 @@ body {
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: var(--shadow-lg);
+  transform: scale(0.9);
+  transition: transform var(--duration-normal) var(--ease-standard);
+}
+
+.modal:not(.hidden) .modal-content {
+  transform: scale(1);
 }
 
 .modal-header {
@@ -1227,6 +1425,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: var(--radius-base);
+  transition: background-color 0.2s ease;
+}
+
+.close-btn:hover {
+  background: var(--color-secondary);
 }
 
 .modal form {
@@ -1250,7 +1454,7 @@ body {
   display: flex;
   padding: var(--space-8) 0;
   z-index: 100;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
 }
 
 .nav-item {
@@ -1265,10 +1469,18 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   color: var(--color-text-secondary);
+  border-radius: var(--radius-base);
+  margin: 0 var(--space-2);
 }
 
 .nav-item.active {
   color: var(--color-primary);
+  background: rgba(var(--color-teal-500-rgb), 0.08);
+}
+
+.nav-item:hover {
+  color: var(--color-primary-hover);
+  background: rgba(var(--color-teal-500-rgb), 0.05);
 }
 
 .nav-item:active {
@@ -1292,10 +1504,30 @@ body {
   border-radius: var(--radius-lg);
   transition: all 0.2s ease;
   touch-action: manipulation;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn:active {
   transform: scale(0.98);
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.btn:active::after {
+  width: 300px;
+  height: 300px;
 }
 
 /* Form Enhancements for Mobile */
@@ -1303,6 +1535,75 @@ body {
   min-height: 48px;
   font-size: var(--font-size-md);
   border-radius: var(--radius-lg);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-teal-500-rgb), 0.1);
+  outline: none;
+}
+
+/* PWA Specific Enhancements */
+@media (display-mode: standalone) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+  
+  .bottom-nav {
+    bottom: env(safe-area-inset-bottom);
+    padding-bottom: calc(var(--space-8) + env(safe-area-inset-bottom));
+  }
+  
+  .install-banner {
+    display: none !important;
+  }
+  
+  #installText {
+    text-content: "Installed";
+  }
+  
+  #installStatus {
+    text-content: "✅";
+  }
+}
+
+/* iOS Safari PWA Enhancements */
+@supports (-webkit-appearance: none) {
+  .btn {
+    -webkit-appearance: none;
+  }
+  
+  .form-control {
+    -webkit-appearance: none;
+  }
+  
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    position: relative;
+  }
+  
+  input[type="checkbox"]:checked {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+  
+  input[type="checkbox"]:checked::after {
+    content: "✓";
+    color: var(--color-btn-primary-text);
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 /* Responsive Design */
@@ -1326,12 +1627,31 @@ body {
   .modal-content {
     max-width: 500px;
   }
+  
+  .install-content {
+    padding: 0 var(--space-24);
+  }
+  
+  .pwa-status {
+    flex-direction: row;
+  }
 }
 
 /* Loading and Success States */
 .btn.loading {
   opacity: 0.7;
   pointer-events: none;
+}
+
+.btn.loading::after {
+  content: "...";
+  animation: dots 1s infinite;
+}
+
+@keyframes dots {
+  0%, 20% { opacity: 0; }
+  50% { opacity: 1; }
+  80%, 100% { opacity: 0; }
 }
 
 .success-message {
@@ -1342,6 +1662,8 @@ body {
   margin-bottom: var(--space-16);
   text-align: center;
   font-weight: var(--font-weight-medium);
+  border: 1px solid rgba(var(--color-success-rgb), 0.2);
+  animation: slideInDown 0.3s ease;
 }
 
 .error-message {
@@ -1352,23 +1674,153 @@ body {
   margin-bottom: var(--space-16);
   text-align: center;
   font-weight: var(--font-weight-medium);
+  border: 1px solid rgba(var(--color-error-rgb), 0.2);
+  animation: slideInDown 0.3s ease;
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Pull to Refresh Indicator */
 .pull-to-refresh {
   position: absolute;
-  top: -50px;
+  top: -60px;
   left: 50%;
   transform: translateX(-50%);
-  padding: var(--space-8);
+  padding: var(--space-12);
   background: var(--color-surface);
   border-radius: var(--radius-full);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
   transition: all 0.3s ease;
   opacity: 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
 }
 
 .pull-to-refresh.active {
   opacity: 1;
   top: var(--space-16);
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .metric-card,
+  .inventory-item,
+  .order-item,
+  .customer-item {
+    border-width: 2px;
+  }
+  
+  .btn {
+    border: 2px solid currentColor;
+  }
+  
+  .stock-badge,
+  .order-status {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .pull-to-refresh {
+    transition: none;
+  }
+  
+  .screen {
+    animation: none;
+  }
+}
+
+/* Dark mode specific adjustments */
+@media (prefers-color-scheme: dark) {
+  .install-banner {
+    background: var(--color-charcoal-800);
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .update-notification {
+    background: var(--color-charcoal-800);
+    border: 1px solid var(--color-border);
+  }
+}
+
+/* Print styles for offline use */
+@media print {
+  .bottom-nav,
+  .install-banner,
+  .offline-indicator,
+  .update-notification,
+  .btn {
+    display: none !important;
+  }
+  
+  .screen {
+    padding: 0;
+    min-height: auto;
+  }
+  
+  .metric-card,
+  .inventory-item,
+  .order-item,
+  .customer-item {
+    break-inside: avoid;
+  }
+}
+
+/* Loading spinner for PWA */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Connection status indicator */
+.connection-status {
+  position: fixed;
+  top: var(--space-16);
+  right: var(--space-16);
+  padding: var(--space-8) var(--space-12);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  z-index: 999;
+  transition: all 0.3s ease;
+}
+
+.connection-status.online {
+  color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.connection-status.offline {
+  color: var(--color-error);
+  border-color: var(--color-error);
 }
