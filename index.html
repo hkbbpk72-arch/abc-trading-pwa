@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="description" content="Complete distributor management app for ABC Trading Co.">
+    <title>ABC Trading Co. - Distributor Management</title>
+    
+    <!-- CRITICAL: Manifest link -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9IiMyNTYzZWIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iOTAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI5MCIgeT0iMTA1IiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIzNSIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkFCQzwvdGV4dD48L3N2Zz4=">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: #fcfcf9; 
+            color: #1f2937;
+            line-height: 1.6;
+        }
+        .container { max-width: 480px; margin: 0 auto; padding: 20px; min-height: 100vh; }
+        .header { text-align: center; margin-bottom: 30px; padding: 20px 0; }
+        .header h1 { font-size: 1.8rem; color: #1f2937; margin-bottom: 8px; }
+        .header p { color: #6b7280; font-size: 0.9rem; }
+        .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 25px 0; }
+        .card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid #2563eb;
+        }
+        .metric h3 { font-size: 1.6rem; color: #2563eb; margin-bottom: 5px; font-weight: 700; }
+        .metric p { color: #6b7280; font-size: 0.85rem; }
+        .actions { margin: 30px 0; }
+        .actions h3 { margin-bottom: 15px; color: #1f2937; }
+        .btn { 
+            width: 100%; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-primary { background: #2563eb; color: white; }
+        .btn-success { background: #16a34a; color: white; }
+        .btn-warning { background: #ea580c; color: white; }
+        .nav { 
+            position: fixed; 
+            bottom: 0; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: white; 
+            display: flex; 
+            border-top: 1px solid #e5e7eb;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+        }
+        .nav button { 
+            flex: 1; 
+            padding: 12px 8px; 
+            border: none; 
+            background: none; 
+            font-size: 0.7rem;
+            color: #6b7280;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .nav button.active { color: #2563eb; }
+        .nav-icon { font-size: 1.2rem; }
+        .install-prompt {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #2563eb;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+        .install-prompt.show { transform: translateY(0); }
+    </style>
+</head>
+<body>
+    <div class="install-prompt" id="installPrompt">
+        <p>Install ABC Trading App for quick access! <button onclick="installApp()" style="background:white; color:#2563eb; border:none; padding:5px 10px; border-radius:4px; margin-left:10px;">Install</button></p>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Welcome, Rajesh Kumar!</h1>
+            <p>ABC Trading Co. • Mumbai, India</p>
+            <p>Distributor Management System</p>
+        </div>
+        
+        <div class="metrics">
+            <div class="card metric">
+                <h3>₹45,250</h3>
+                <p>Today's Sales</p>
+            </div>
+            <div class="card metric">
+                <h3>8</h3>
+                <p>Pending Orders</p>
+            </div>
+            <div class="card metric">
+                <h3>3</h3>
+                <p>Low Stock Items</p>
+            </div>
+            <div class="card metric">
+                <h3>₹1,25,000</h3>
+                <p>Outstanding Payments</p>
+            </div>
+        </div>
+        
+        <div class="card actions">
+            <h3>Quick Actions</h3>
+            <button class="btn btn-primary" onclick="alert('Add Stock functionality')">📦 Add Stock</button>
+            <button class="btn btn-success" onclick="alert('Create Order functionality')">📋 Create Order</button>
+            <button class="btn btn-warning" onclick="alert('Record Payment functionality')">💰 Record Payment</button>
+        </div>
+        
+        <div class="card">
+            <h3>Recent Activity</h3>
+            <p style="margin: 10px 0; padding: 10px; background: #f3f4f6; border-radius: 6px;">
+                <strong>Rice Bags (25kg)</strong><br>
+                Stock: <span style="color: #16a34a; font-weight: 600;">150 units</span> • Price: ₹1,250
+            </p>
+            <p style="margin: 10px 0; padding: 10px; background: #fef3c7; border-radius: 6px;">
+                <strong>Cooking Oil (1L)</strong><br>
+                Stock: <span style="color: #ea580c; font-weight: 600;">25 units (Low Stock)</span> • Price: ₹120
+            </p>
+        </div>
+    </div>
+    
+    <div class="nav">
+        <button class="active">
+            <span class="nav-icon">🏠</span>
+            <span>Dashboard</span>
+        </button>
+        <button>
+            <span class="nav-icon">📦</span>
+            <span>Inventory</span>
+        </button>
+        <button>
+            <span class="nav-icon">📋</span>
+            <span>Orders</span>
+        </button>
+        <button>
+            <span class="nav-icon">💰</span>
+            <span>Accounts</span>
+        </button>
+        <button>
+            <span class="nav-icon">👤</span>
+            <span>Profile</span>
+        </button>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
