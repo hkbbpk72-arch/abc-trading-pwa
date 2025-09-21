@@ -6,7 +6,6 @@ const appData = {
     "location": "Mumbai, India",
     "phone": "+91 9876543210"
   },
-    },
     dashboard: {
         todaysSales: 45250,
         pendingOrders: 8,
@@ -42,7 +41,6 @@ const appData = {
 
 // PWA Variables
 let deferredPrompt = null;
-let isInstalled = false;
 let salesChart = null;
 let currentScreen = 'dashboard-screen';
 
@@ -59,7 +57,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// PWA Install Prompt
+// PWA Install Prompt (No status display)
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -67,14 +65,13 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 window.addEventListener('appinstalled', () => {
-    isInstalled = true;
     hideInstallBanner();
     console.log('PWA was installed');
 });
 
 function showInstallBanner() {
     const banner = document.getElementById('installBanner');
-    if (banner) {
+    if (banner && !sessionStorage.getItem('installDismissed')) {
         banner.classList.remove('hidden');
     }
 }
@@ -149,9 +146,6 @@ function initializeScreen(screenId) {
         case 'accounts-screen':
             populateAccounts();
             break;
-        case 'profile-screen':
-            // Profile screen initialization if needed
-            break;
     }
 }
 
@@ -189,7 +183,8 @@ function createSalesChart() {
                     backgroundColor: '#2563eb',
                     borderColor: '#1d4ed8',
                     borderWidth: 1,
-                    borderRadius: 8
+                    borderRadius: 8,
+                    borderSkipped: false
                 }]
             },
             options: {
@@ -214,7 +209,20 @@ function createSalesChart() {
                             callback: function(value) {
                                 return '₹' + (value/1000) + 'k';
                             }
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
                         }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                elements: {
+                    bar: {
+                        borderRadius: 6
                     }
                 }
             }
@@ -289,7 +297,6 @@ function populateOrders() {
     ordersList.innerHTML = '';
     
     appData.orders.forEach(order => {
-        const statusClass = `status-${order.status}`;
         const statusText = order.status.charAt(0).toUpperCase() + order.status.slice(1);
         
         const orderElement = document.createElement('div');
@@ -478,11 +485,16 @@ function showSuccessMessage(message) {
     toast.textContent = message;
     toast.style.cssText = `
         position: fixed;
-        top: 20px;
+        top: 80px;
         left: 50%;
         transform: translateX(-50%);
         z-index: 1000;
         max-width: 400px;
+        background: #16a34a;
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     `;
     
     document.body.appendChild(toast);
@@ -527,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     if (dismissBtn) {
-        dismissBtn.addEventListener('click', dismissInstall);
+        installBtn.addEventListener('click', dismissInstall);
     }
     
     // Setup form handlers
@@ -555,9 +567,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Check if already installed
+    // Check if already installed (hide banner if standalone)
     if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-        isInstalled = true;
         hideInstallBanner();
     }
     
