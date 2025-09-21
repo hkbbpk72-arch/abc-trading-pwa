@@ -5,405 +5,330 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#218098">
+    <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="ABC Trading Co.">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="msapplication-TileColor" content="#218098">
-    <meta name="msapplication-navbutton-color" content="#218098">
-    <meta name="format-detection" content="telephone=no">
     
-    <!-- Description for search engines and app stores -->
-    <meta name="description" content="Complete distributor management app for ABC Trading Co. - Manage inventory, orders, accounts, and sales analytics with real-time data synchronization and offline capabilities.">
+    <!-- Description and Keywords -->
+    <meta name="description" content="Complete distributor management app for ABC Trading Co. Manage inventory, track orders, handle accounts receivables, and monitor sales analytics.">
     <meta name="keywords" content="distributor, inventory management, orders, accounts, trading, business, PWA">
     
     <title>ABC Trading Co. - Distributor Management</title>
     
-    <!-- PWA Manifest - Critical: Separate manifest.json file reference -->
-    <link rel="manifest" href="/manifest.json">
+    <!-- PWA Manifest Link -->
+    <link rel="manifest" href="manifest.json">
     
     <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9IiMyMTgwOTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMjQiIHk9IjQ4IiB3aWR0aD0iMTMyIiBoZWlnaHQ9Ijg0IiByeD0iMTIiIGZpbGw9IiNmZmYiLz4KICA8dGV4dCB4PSI5MCIgeT0iNzgiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+QUJDPC90ZXh0PgogIDx0ZXh0IHg9IjkwIiB5PSIxMDIiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+VHJhZGluZzwvdGV4dD4KICA8cGF0aCBkPSJNNDQgMTE2IEw2NCAxMDAgTDg0IDExNiBMMTA0IDEwMCBMMTI0IDExNiBMMTM2IDEwOCIgc3Ryb2tlPSIjMjE4MDk4IiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz4KPC9zdmc+">
-    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9IiMyMTgwOTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMjQiIHk9IjQ4IiB3aWR0aD0iMTMyIiBoZWlnaHQ9Ijg0IiByeD0iMTIiIGZpbGw9IiNmZmYiLz4KICA8dGV4dCB4PSI5MCIgeT0iNzgiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+QUJDPC90ZXh0PgogIDx0ZXh0IHg9IjkwIiB5PSIxMDIiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+VHJhZGluZzwvdGV4dD4KICA8cGF0aCBkPSJNNDQgMTE2IEw2NCAxMDAgTDg0IDExNiBMMTA0IDEwMCBMMTI0IDExNiBMMTM2IDEwOCIgc3Ryb2tlPSIjMjE4MDk4IiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz4KPC9zdmc+">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9IiMyNTYzZWIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iOTAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI5MCIgeT0iMTA1IiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIzNSIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkFCQzwvdGV4dD48L3N2Zz4=">
     
-    <!-- Favicon with multiple sizes -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0iIzIxODA5OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB4PSI0IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMTYiIHJ4PSIyIiBmaWxsPSIjZmZmIi8+CiAgPHRleHQgeD0iMTYiIHk9IjE4IiBmaWxsPSIjMjE4MDk4IiBmb250LXNpemU9IjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+QUJDPC90ZXh0Pgo8L3N2Zz4=">
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
     
-    <!-- Windows Tiles -->
-    <meta name="msapplication-TileImage" content="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0IiBoZWlnaHQ9IjE0NCIgdmlld0JveD0iMCAwIDE0NCAxNDQiIGZpbGw9IiMyMTgwOTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMTgiIHk9IjM2IiB3aWR0aD0iMTA4IiBoZWlnaHQ9IjcyIiByeD0iMTAiIGZpbGw9IiNmZmYiLz4KICA8dGV4dCB4PSI3MiIgeT0iNjAiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+QUJDPC90ZXh0PgogIDx0ZXh0IHg9IjcyIiB5PSI4MCIgZmlsbD0iIzIxODA5OCIgZm9udC1zaXplPSIxMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIj5UcmFkaW5nPC90ZXh0PgogIDxwYXRoIGQ9Ik0zNiA5NiBMNTQgODQgTDcyIDk2IEw5MCA4NCBMMTA4IDk2IiBzdHJva2U9IiMyMTgwOTgiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4=">
-    <meta name="msapplication-square70x70logo" content="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAiIGhlaWdodD0iNzAiIHZpZXdCb3g9IjAgMCA3MCA3MCIgZmlsbD0iIzIxODA5OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB4PSI4IiB5PSIxOCIgd2lkdGg9IjU0IiBoZWlnaHQ9IjM0IiByeD0iNSIgZmlsbD0iI2ZmZiIvPgogIDx0ZXh0IHg9IjM1IiB5PSIzMCIgZmlsbD0iIzIxODA5OCIgZm9udC1zaXplPSI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiPkFCQzwvdGV4dD4KICA8dGV4dCB4PSIzNSIgeT0iNDIiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIj5UcmFkaW5nPC90ZXh0Pgo8L3N2Zz4=">
-    
-    <!-- Safari Pinned Tab -->
-    <link rel="mask-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0iYmxhY2siIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMiIgeT0iNCIgd2lkdGg9IjEyIiBoZWlnaHQ9IjgiIHJ4PSIxIi8+CiAgPHBhdGggZD0iTTQgMTIgTDYgMTAgTDggMTIgTDEwIDEwIEwxMiAxMiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIGZpbGw9Im5vbmUiLz4KPC9zdmc+" color="#218098">
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js for Dashboard -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- PWA Install Banner -->
-    <div id="installBanner" class="install-banner hidden">
-        <div class="install-content">
-            <div class="install-info">
-                <h3>📱 Install ABC Trading App</h3>
-                <p>Get quick access from your home screen</p>
-            </div>
-            <div class="install-actions">
-                <button class="btn btn--primary btn--sm" id="installBtn">Install</button>
-                <button class="btn btn--outline btn--sm" id="dismissBtn">Later</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Dashboard Screen -->
-    <div id="dashboard-screen" class="screen active">
-        <div class="screen-header">
-            <h1>Welcome back, Rajesh!</h1>
-            <p class="location">ABC Trading Co. • Mumbai, India</p>
-        </div>
+    <!-- App Container -->
+    <div id="app">
         
-        <div class="metrics-grid">
-            <div class="metric-card primary">
-                <div class="metric-value">₹45,250</div>
-                <div class="metric-label">Today's Sales</div>
+        <!-- Dashboard Screen -->
+        <div id="dashboard-screen" class="screen active">
+            <div class="screen-header">
+                <h1>Welcome back, Rajesh!</h1>
+                <p class="location">ABC Trading Co. • Mumbai, India</p>
             </div>
-            <div class="metric-card warning">
-                <div class="metric-value">8</div>
-                <div class="metric-label">Pending Orders</div>
-            </div>
-            <div class="metric-card error">
-                <div class="metric-value">3</div>
-                <div class="metric-label">Low Stock Items</div>
-            </div>
-            <div class="metric-card info">
-                <div class="metric-value">₹1,25,000</div>
-                <div class="metric-label">Outstanding Payments</div>
-            </div>
-        </div>
-
-        <div class="chart-section">
-            <h3>Last 7 Days Sales</h3>
-            <div class="chart-container" style="position: relative; height: 200px;">
-                <canvas id="salesChart"></canvas>
-            </div>
-        </div>
-
-        <div class="quick-actions">
-            <h3>Quick Actions</h3>
-            <div class="action-buttons">
-                <button class="btn btn--primary action-btn" onclick="showScreen('inventory-screen')">
-                    <span class="btn-icon">📦</span>
-                    Add Stock
-                </button>
-                <button class="btn btn--primary action-btn" onclick="showScreen('orders-screen')">
-                    <span class="btn-icon">📋</span>
-                    Create Order
-                </button>
-            </div>
-        </div>
-
-        <!-- PWA Status Indicators -->
-        <div class="pwa-status">
-            <div class="status-item">
-                <span class="status-icon" id="installStatus">📱</span>
-                <span class="status-text" id="installText">PWA Ready</span>
-            </div>
-            <div class="status-item">
-                <span class="status-icon" id="offlineStatus">🌐</span>
-                <span class="status-text" id="offlineText">Online</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Inventory Screen -->
-    <div id="inventory-screen" class="screen">
-        <div class="screen-header">
-            <h1>Inventory</h1>
-            <button class="btn btn--primary" onclick="showAddItemForm()">+ Add New Item</button>
-        </div>
-
-        <div class="search-bar">
-            <input type="text" class="form-control" placeholder="Search items..." id="inventorySearch">
-        </div>
-
-        <div class="inventory-list" id="inventoryList">
-            <!-- Items will be populated by JavaScript -->
-        </div>
-
-        <!-- Add Item Modal -->
-        <div class="modal hidden" id="addItemModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Add New Item</h3>
-                    <button class="close-btn" onclick="hideAddItemForm()">&times;</button>
+            
+            <div class="metrics-grid">
+                <div class="metric-card primary">
+                    <div class="metric-value">₹45,250</div>
+                    <div class="metric-label">Today's Sales</div>
                 </div>
-                <form id="addItemForm">
-                    <div class="form-group">
-                        <label class="form-label">Item Name</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Stock Quantity</label>
-                        <input type="number" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Price per Unit (₹)</label>
-                        <input type="number" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Category</label>
-                        <select class="form-control" required>
-                            <option value="">Select Category</option>
-                            <option value="Food Grains">Food Grains</option>
-                            <option value="Oils">Oils</option>
-                            <option value="Food Items">Food Items</option>
-                            <option value="Beverages">Beverages</option>
-                        </select>
-                    </div>
-                    <div class="modal-actions">
-                        <button type="button" class="btn btn--secondary" onclick="hideAddItemForm()">Cancel</button>
-                        <button type="submit" class="btn btn--primary">Add Item</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Orders Screen -->
-    <div id="orders-screen" class="screen">
-        <div class="screen-header">
-            <h1>Orders</h1>
-            <button class="btn btn--primary" onclick="showCreateOrderForm()">+ Create Order</button>
-        </div>
-
-        <div class="tab-buttons">
-            <button class="tab-btn active" onclick="showOrderTab('active')">Active Orders</button>
-            <button class="tab-btn" onclick="showOrderTab('all')">All Orders</button>
-        </div>
-
-        <div class="orders-list" id="ordersList">
-            <!-- Orders will be populated by JavaScript -->
-        </div>
-
-        <!-- Create Order Modal -->
-        <div class="modal hidden" id="createOrderModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Create New Order</h3>
-                    <button class="close-btn" onclick="hideCreateOrderForm()">&times;</button>
+                <div class="metric-card warning">
+                    <div class="metric-value">8</div>
+                    <div class="metric-label">Pending Orders</div>
                 </div>
-                <form id="createOrderForm">
-                    <div class="form-group">
-                        <label class="form-label">Customer</label>
-                        <select class="form-control" required id="customerSelect">
-                            <option value="">Select Customer</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Items</label>
-                        <textarea class="form-control" placeholder="Enter items (e.g., Rice - 2 bags, Oil - 5 bottles)" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Total Amount (₹)</label>
-                        <input type="number" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Delivery Date</label>
-                        <input type="date" class="form-control" required>
-                    </div>
-                    <div class="modal-actions">
-                        <button type="button" class="btn btn--secondary" onclick="hideCreateOrderForm()">Cancel</button>
-                        <button type="submit" class="btn btn--primary">Create Order</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Accounts Screen -->
-    <div id="accounts-screen" class="screen">
-        <div class="screen-header">
-            <h1>Accounts</h1>
-            <button class="btn btn--primary" onclick="showRecordPaymentForm()">Record Payment</button>
-        </div>
-
-        <div class="accounts-summary">
-            <div class="metric-card success">
-                <div class="metric-value">₹1,25,000</div>
-                <div class="metric-label">Total Receivables</div>
-            </div>
-            <div class="metric-card error">
-                <div class="metric-value">₹85,000</div>
-                <div class="metric-label">Total Payables</div>
-            </div>
-            <div class="metric-card info">
-                <div class="metric-value">₹40,000</div>
-                <div class="metric-label">Net Balance</div>
-            </div>
-        </div>
-
-        <div class="accounts-section">
-            <h3>Outstanding Payments</h3>
-            <div class="customers-list" id="customersList">
-                <!-- Customers will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Record Payment Modal -->
-        <div class="modal hidden" id="recordPaymentModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Record Payment</h3>
-                    <button class="close-btn" onclick="hideRecordPaymentForm()">&times;</button>
+                <div class="metric-card error">
+                    <div class="metric-value">3</div>
+                    <div class="metric-label">Low Stock Items</div>
                 </div>
-                <form id="recordPaymentForm">
-                    <div class="form-group">
-                        <label class="form-label">Customer</label>
-                        <select class="form-control" required>
-                            <option value="">Select Customer</option>
-                            <option value="Sharma General Store">Sharma General Store</option>
-                            <option value="Patel Kirana Shop">Patel Kirana Shop</option>
-                            <option value="Khan Mart">Khan Mart</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Payment Amount (₹)</label>
-                        <input type="number" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Payment Method</label>
-                        <select class="form-control" required>
-                            <option value="">Select Method</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Bank Transfer">Bank Transfer</option>
-                            <option value="UPI">UPI</option>
-                            <option value="Cheque">Cheque</option>
-                        </select>
-                    </div>
-                    <div class="modal-actions">
-                        <button type="button" class="btn btn--secondary" onclick="hideRecordPaymentForm()">Cancel</button>
-                        <button type="submit" class="btn btn--primary">Record Payment</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile Screen -->
-    <div id="profile-screen" class="screen">
-        <div class="screen-header">
-            <h1>Profile & Settings</h1>
-        </div>
-
-        <div class="profile-info">
-            <div class="profile-card">
-                <h3>Business Information</h3>
-                <div class="info-item">
-                    <strong>Business Name:</strong> ABC Trading Co.
-                </div>
-                <div class="info-item">
-                    <strong>Owner:</strong> Rajesh Kumar
-                </div>
-                <div class="info-item">
-                    <strong>Location:</strong> Mumbai, India
-                </div>
-                <div class="info-item">
-                    <strong>Phone:</strong> +91 9876543210
+                <div class="metric-card info">
+                    <div class="metric-value">₹1,25,000</div>
+                    <div class="metric-label">Outstanding Payments</div>
                 </div>
             </div>
 
-            <div class="settings-section">
-                <h3>PWA Settings</h3>
-                <div class="setting-item">
-                    <label class="setting-label">
-                        <input type="checkbox" checked> Low Stock Alerts
-                    </label>
-                </div>
-                <div class="setting-item">
-                    <label class="setting-label">
-                        <input type="checkbox" checked> Payment Reminders
-                    </label>
-                </div>
-                <div class="setting-item">
-                    <label class="setting-label">
-                        <input type="checkbox" checked> Order Updates
-                    </label>
-                </div>
-                <div class="setting-item">
-                    <label class="setting-label">
-                        <input type="checkbox" checked> Offline Mode
-                    </label>
-                </div>
-                <div class="setting-item">
-                    <button class="btn btn--outline btn--sm" onclick="clearAppData()">Clear App Data</button>
+            <div class="chart-section">
+                <h3>Last 7 Days Sales</h3>
+                <div class="chart-container">
+                    <canvas id="salesChart"></canvas>
                 </div>
             </div>
 
-            <div class="pwa-info">
+            <div class="quick-actions">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="showAddItemForm()">
+                        📦 Add Stock
+                    </button>
+                    <button class="btn btn-secondary" onclick="showCreateOrderForm()">
+                        📋 Create Order
+                    </button>
+                    <button class="btn btn-success" onclick="showRecordPaymentForm()">
+                        💰 Record Payment
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Screen -->
+        <div id="inventory-screen" class="screen">
+            <div class="screen-header">
+                <h1>Inventory Management</h1>
+                <button class="btn btn-primary" onclick="showAddItemForm()">+ Add Item</button>
+            </div>
+            
+            <div class="search-section">
+                <input type="text" placeholder="Search items..." class="search-input" id="inventorySearch">
+            </div>
+            
+            <div id="inventoryList" class="inventory-list">
+                <!-- Inventory items will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Orders Screen -->
+        <div id="orders-screen" class="screen">
+            <div class="screen-header">
+                <h1>Order Management</h1>
+                <button class="btn btn-primary" onclick="showCreateOrderForm()">+ Create Order</button>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showOrderTab('all')">All Orders</button>
+                <button class="tab-btn" onclick="showOrderTab('active')">Active Only</button>
+            </div>
+            
+            <div id="ordersList" class="orders-list">
+                <!-- Orders will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Accounts Screen -->
+        <div id="accounts-screen" class="screen">
+            <div class="screen-header">
+                <h1>Accounts</h1>
+            </div>
+            
+            <div class="accounts-summary">
+                <div class="summary-card">
+                    <h3>₹1,25,000</h3>
+                    <p>Total Receivables</p>
+                </div>
+                <div class="summary-card">
+                    <h3>₹85,000</h3>
+                    <p>Total Payables</p>
+                </div>
+                <div class="summary-card success">
+                    <h3>₹40,000</h3>
+                    <p>Net Balance</p>
+                </div>
+            </div>
+            
+            <div class="customer-section">
+                <h3>Outstanding Payments</h3>
+                <div id="customersList" class="customers-list">
+                    <!-- Customers will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Screen -->
+        <div id="profile-screen" class="screen">
+            <div class="screen-header">
+                <h1>Profile & Settings</h1>
+            </div>
+            
+            <div class="profile-info">
                 <div class="profile-card">
-                    <h3>App Information</h3>
-                    <div class="info-item">
-                        <strong>Version:</strong> 1.0.0
-                    </div>
-                    <div class="info-item">
-                        <strong>Status:</strong> <span id="connectionStatus">Online</span>
-                    </div>
-                    <div class="info-item">
-                        <strong>Last Updated:</strong> <span id="lastUpdated">Just now</span>
-                    </div>
-                    <div class="info-item">
-                        <button class="btn btn--outline btn--sm" onclick="checkForUpdates()">Check for Updates</button>
-                    </div>
-                    <div class="info-item">
-                        <strong>Installation:</strong> <span id="installationStatus">Browser</span>
-                    </div>
+                    <h3>Business Information</h3>
+                    <p><strong>Business Name:</strong> ABC Trading Co.</p>
+                    <p><strong>Owner:</strong> Rajesh Kumar</p>
+                    <p><strong>Location:</strong> Mumbai, India</p>
+                    <p><strong>Phone:</strong> +91 9876543210</p>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Offline Indicator -->
-    <div id="offlineIndicator" class="offline-indicator hidden">
-        <span>📵 You're offline - Some features may be limited</span>
-    </div>
-
-    <!-- Update Available Notification -->
-    <div id="updateNotification" class="update-notification hidden">
-        <div class="update-content">
-            <h4>🔄 Update Available!</h4>
-            <p>A new version is ready. Restart to update.</p>
-            <div class="update-actions">
-                <button class="btn btn--sm" onclick="reloadForUpdate()">Update Now</button>
-                <button class="btn btn--outline btn--sm" onclick="dismissUpdate()">Later</button>
+            
+            <div class="settings-section">
+                <h3>Notification Settings</h3>
+                <div class="setting-item">
+                    <span>Low Stock Alerts</span>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <span>Order Notifications</span>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="showScreen('dashboard-screen')" data-screen="dashboard-screen">
+        <button class="nav-item active" data-screen="dashboard-screen" onclick="showScreen('dashboard-screen')">
             <span class="nav-icon">🏠</span>
             <span class="nav-label">Dashboard</span>
         </button>
-        <button class="nav-item" onclick="showScreen('inventory-screen')" data-screen="inventory-screen">
+        <button class="nav-item" data-screen="inventory-screen" onclick="showScreen('inventory-screen')">
             <span class="nav-icon">📦</span>
             <span class="nav-label">Inventory</span>
         </button>
-        <button class="nav-item" onclick="showScreen('orders-screen')" data-screen="orders-screen">
+        <button class="nav-item" data-screen="orders-screen" onclick="showScreen('orders-screen')">
             <span class="nav-icon">📋</span>
             <span class="nav-label">Orders</span>
         </button>
-        <button class="nav-item" onclick="showScreen('accounts-screen')" data-screen="accounts-screen">
+        <button class="nav-item" data-screen="accounts-screen" onclick="showScreen('accounts-screen')">
             <span class="nav-icon">💰</span>
             <span class="nav-label">Accounts</span>
         </button>
-        <button class="nav-item" onclick="showScreen('profile-screen')" data-screen="profile-screen">
+        <button class="nav-item" data-screen="profile-screen" onclick="showScreen('profile-screen')">
             <span class="nav-icon">👤</span>
             <span class="nav-label">Profile</span>
         </button>
     </nav>
 
+    <!-- Install Banner -->
+    <div id="installBanner" class="install-banner hidden">
+        <p>Install ABC Trading App for quick access!</p>
+        <div class="banner-actions">
+            <button id="installBtn" class="btn btn-install">Install</button>
+            <button id="dismissBtn" class="btn btn-dismiss">✕</button>
+        </div>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div id="addItemModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Item</h3>
+                <button class="close-btn" onclick="hideAddItemForm()">×</button>
+            </div>
+            <form id="addItemForm">
+                <div class="form-group">
+                    <label>Item Name</label>
+                    <input type="text" name="itemName" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Stock Quantity</label>
+                    <input type="number" name="stock" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Price per Unit (₹)</label>
+                    <input type="number" name="price" step="0.01" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category" class="form-select" required>
+                        <option value="">Select Category</option>
+                        <option value="Food Grains">Food Grains</option>
+                        <option value="Oils">Oils</option>
+                        <option value="Food Items">Food Items</option>
+                        <option value="Beverages">Beverages</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Add Item</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideAddItemForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Order Modal -->
+    <div id="createOrderModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Order</h3>
+                <button class="close-btn" onclick="hideCreateOrderForm()">×</button>
+            </div>
+            <form id="createOrderForm">
+                <div class="form-group">
+                    <label>Customer</label>
+                    <select name="customer" class="form-select" required>
+                        <option value="">Select Customer</option>
+                        <option value="Sharma General Store">Sharma General Store</option>
+                        <option value="Patel Kirana Shop">Patel Kirana Shop</option>
+                        <option value="Khan Mart">Khan Mart</option>
+                        <option value="Singh Store">Singh Store</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Items</label>
+                    <textarea name="items" class="form-textarea" placeholder="Enter items (e.g., Rice - 2 bags, Oil - 5 bottles)" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Total Amount (₹)</label>
+                    <input type="number" name="total" step="0.01" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Delivery Date</label>
+                    <input type="date" name="deliveryDate" class="form-input" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Create Order</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideCreateOrderForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Record Payment Modal -->
+    <div id="recordPaymentModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Record Payment</h3>
+                <button class="close-btn" onclick="hideRecordPaymentForm()">×</button>
+            </div>
+            <form id="recordPaymentForm">
+                <div class="form-group">
+                    <label>Customer</label>
+                    <select name="customer" class="form-select" required>
+                        <option value="">Select Customer</option>
+                        <option value="Sharma General Store">Sharma General Store</option>
+                        <option value="Patel Kirana Shop">Patel Kirana Shop</option>
+                        <option value="Khan Mart">Khan Mart</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Payment Amount (₹)</label>
+                    <input type="number" name="amount" step="0.01" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select name="method" class="form-select" required>
+                        <option value="">Select Method</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="UPI">UPI</option>
+                        <option value="Cheque">Cheque</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Record Payment</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideRecordPaymentForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
     <script src="app.js"></script>
 </body>
 </html>
