@@ -1,11 +1,11 @@
 // Application data from the provided JSON
 const appData = {
-  "distributor": {
-    "name": "CrunchCraft",
-    "owner": "Rajesh Kumar",
-    "location": "Mumbai, India",
-    "phone": "+91 9876543210"
-  },
+    distributor: {
+        name: "ABC Trading Co.",
+        owner: "Rajesh Kumar",
+        location: "Mumbai, India",
+        phone: "+91 9876543210"
+    },
     dashboard: {
         todaysSales: 45250,
         pendingOrders: 8,
