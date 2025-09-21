@@ -57,7 +57,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// PWA Install Prompt (No status display)
+// PWA Install Prompt
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -160,7 +160,7 @@ function initializeDashboard() {
     // Create chart after a short delay to ensure canvas is ready
     setTimeout(() => {
         createSalesChart();
-    }, 200);
+    }, 300);
 }
 
 function createSalesChart() {
@@ -182,8 +182,13 @@ function createSalesChart() {
                     data: appData.dashboard.weeklyData,
                     backgroundColor: '#2563eb',
                     borderColor: '#1d4ed8',
-                    borderWidth: 1,
-                    borderRadius: 8,
+                    borderWidth: 0,
+                    borderRadius: {
+                        topLeft: 6,
+                        topRight: 6,
+                        bottomLeft: 0,
+                        bottomRight: 0
+                    },
                     borderSkipped: false
                 }]
             },
@@ -195,6 +200,11 @@ function createSalesChart() {
                         display: false
                     },
                     tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        cornerRadius: 8,
+                        displayColors: false,
                         callbacks: {
                             label: function(context) {
                                 return `Sales: ₹${context.parsed.y.toLocaleString()}`;
@@ -205,18 +215,35 @@ function createSalesChart() {
                 scales: {
                     y: {
                         beginAtZero: true,
+                        border: {
+                            display: false
+                        },
+                        grid: {
+                            color: 'rgba(148, 163, 184, 0.1)',
+                            drawBorder: false
+                        },
                         ticks: {
+                            color: '#64748b',
+                            font: {
+                                size: 12
+                            },
                             callback: function(value) {
                                 return '₹' + (value/1000) + 'k';
                             }
-                        },
-                        grid: {
-                            color: 'rgba(0,0,0,0.1)'
                         }
                     },
                     x: {
+                        border: {
+                            display: false
+                        },
                         grid: {
                             display: false
+                        },
+                        ticks: {
+                            color: '#64748b',
+                            font: {
+                                size: 12
+                            }
                         }
                     }
                 },
@@ -251,7 +278,7 @@ function populateInventory() {
             <div class="item-info">
                 <h4 class="item-name">${item.name}</h4>
                 <p>Stock: <span class="stock-${stockClass}">${item.stock} units</span></p>
-                <p>Price: ₹${item.price}</p>
+                <p>Price: ₹${item.price.toLocaleString()}</p>
                 <p>Category: ${item.category}</p>
                 <p>Min Stock: ${item.minStock}</p>
             </div>
@@ -430,6 +457,7 @@ function handleAddItem(e) {
     populateInventory();
     hideAddItemForm();
     showSuccessMessage('Item added successfully!');
+    e.target.reset();
 }
 
 function handleCreateOrder(e) {
@@ -450,6 +478,7 @@ function handleCreateOrder(e) {
     populateOrders();
     hideCreateOrderForm();
     showSuccessMessage('Order created successfully!');
+    e.target.reset();
 }
 
 function handleRecordPayment(e) {
@@ -467,6 +496,7 @@ function handleRecordPayment(e) {
     populateAccounts();
     hideRecordPaymentForm();
     showSuccessMessage('Payment recorded successfully!');
+    e.target.reset();
 }
 
 // Utility Functions
@@ -483,19 +513,6 @@ function showSuccessMessage(message) {
     const toast = document.createElement('div');
     toast.className = 'success-message';
     toast.textContent = message;
-    toast.style.cssText = `
-        position: fixed;
-        top: 80px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1000;
-        max-width: 400px;
-        background: #16a34a;
-        color: white;
-        padding: 1rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    `;
     
     document.body.appendChild(toast);
     
@@ -539,7 +556,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     if (dismissBtn) {
-        installBtn.addEventListener('click', dismissInstall);
+        dismissBtn.addEventListener('click', dismissInstall);
     }
     
     // Setup form handlers
@@ -565,6 +582,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 modal.classList.add('hidden');
             }
         });
+    });
+    
+    // Setup keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.classList.add('hidden');
+            });
+        }
     });
     
     // Check if already installed (hide banner if standalone)
