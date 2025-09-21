@@ -11,17 +11,10 @@
     <meta name="apple-mobile-web-app-title" content="ABC Trading Co.">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <!-- Description and Keywords -->
-    <meta name="description" content="Complete distributor management app for ABC Trading Co. Manage inventory, track orders, handle accounts receivables, and monitor sales analytics.">
-    <meta name="keywords" content="distributor, inventory management, orders, accounts, trading, business, PWA">
-    
     <title>ABC Trading Co. - Distributor Management</title>
     
     <!-- PWA Manifest Link -->
     <link rel="manifest" href="manifest.json">
-    
-    <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9IiMyNTYzZWIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iOTAiIGN5PSI5MCIgcj0iNzAiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI5MCIgeT0iMTA1IiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIzNSIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkFCQzwvdGV4dD48L3N2Zz4=">
     
     <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
@@ -35,10 +28,10 @@
         
         <!-- Dashboard Screen -->
         <div id="dashboard-screen" class="screen active">
-            <div class="screen-header">
+            <header class="app-header">
                 <h1>Welcome back, Rajesh!</h1>
                 <p class="location">ABC Trading Co. • Mumbai, India</p>
-            </div>
+            </header>
             
             <div class="metrics-grid">
                 <div class="metric-card primary">
@@ -84,10 +77,10 @@
 
         <!-- Inventory Screen -->
         <div id="inventory-screen" class="screen">
-            <div class="screen-header">
+            <header class="app-header">
                 <h1>Inventory Management</h1>
-                <button class="btn btn-primary" onclick="showAddItemForm()">+ Add Item</button>
-            </div>
+                <button class="btn btn-primary btn-sm" onclick="showAddItemForm()">+ Add Item</button>
+            </header>
             
             <div class="search-section">
                 <input type="text" placeholder="Search items..." class="search-input" id="inventorySearch">
@@ -100,10 +93,10 @@
 
         <!-- Orders Screen -->
         <div id="orders-screen" class="screen">
-            <div class="screen-header">
+            <header class="app-header">
                 <h1>Order Management</h1>
-                <button class="btn btn-primary" onclick="showCreateOrderForm()">+ Create Order</button>
-            </div>
+                <button class="btn btn-primary btn-sm" onclick="showCreateOrderForm()">+ Create Order</button>
+            </header>
             
             <div class="tabs">
                 <button class="tab-btn active" onclick="showOrderTab('all')">All Orders</button>
@@ -117,9 +110,9 @@
 
         <!-- Accounts Screen -->
         <div id="accounts-screen" class="screen">
-            <div class="screen-header">
+            <header class="app-header">
                 <h1>Accounts</h1>
-            </div>
+            </header>
             
             <div class="accounts-summary">
                 <div class="summary-card">
@@ -136,7 +129,7 @@
                 </div>
             </div>
             
-            <div class="customer-section">
+            <div class="section">
                 <h3>Outstanding Payments</h3>
                 <div id="customersList" class="customers-list">
                     <!-- Customers will be populated by JavaScript -->
@@ -146,35 +139,39 @@
 
         <!-- Profile Screen -->
         <div id="profile-screen" class="screen">
-            <div class="screen-header">
+            <header class="app-header">
                 <h1>Profile & Settings</h1>
-            </div>
+            </header>
             
-            <div class="profile-info">
+            <div class="profile-section">
                 <div class="profile-card">
                     <h3>Business Information</h3>
-                    <p><strong>Business Name:</strong> ABC Trading Co.</p>
-                    <p><strong>Owner:</strong> Rajesh Kumar</p>
-                    <p><strong>Location:</strong> Mumbai, India</p>
-                    <p><strong>Phone:</strong> +91 9876543210</p>
+                    <div class="profile-info">
+                        <p><strong>Business Name:</strong> ABC Trading Co.</p>
+                        <p><strong>Owner:</strong> Rajesh Kumar</p>
+                        <p><strong>Location:</strong> Mumbai, India</p>
+                        <p><strong>Phone:</strong> +91 9876543210</p>
+                    </div>
                 </div>
             </div>
             
             <div class="settings-section">
                 <h3>Notification Settings</h3>
-                <div class="setting-item">
-                    <span>Low Stock Alerts</span>
-                    <label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-item">
-                    <span>Order Notifications</span>
-                    <label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider"></span>
-                    </label>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <span>Low Stock Alerts</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span>Order Notifications</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -208,8 +205,8 @@
     <div id="installBanner" class="install-banner hidden">
         <p>Install ABC Trading App for quick access!</p>
         <div class="banner-actions">
-            <button id="installBtn" class="btn btn-install">Install</button>
-            <button id="dismissBtn" class="btn btn-dismiss">✕</button>
+            <button id="installBtn" class="btn-install">Install</button>
+            <button id="dismissBtn" class="btn-dismiss">✕</button>
         </div>
     </div>
 
