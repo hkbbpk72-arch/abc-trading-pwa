@@ -2,13 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#2563eb">
-    <title>ABC Trading Co. - Distributor App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#218098">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ABC Trading Co.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#218098">
+    <meta name="msapplication-navbutton-color" content="#218098">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- Description for search engines and app stores -->
+    <meta name="description" content="Complete distributor management app for ABC Trading Co. - Manage inventory, orders, accounts, and sales analytics with real-time data synchronization and offline capabilities.">
+    <meta name="keywords" content="distributor, inventory management, orders, accounts, trading, business, PWA">
+    
+    <title>ABC Trading Co. - Distributor Management</title>
+    
+    <!-- PWA Manifest - Critical: Separate manifest.json file reference -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9IiMyMTgwOTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMjQiIHk9IjQ4IiB3aWR0aD0iMTMyIiBoZWlnaHQ9Ijg0IiByeD0iMTIiIGZpbGw9IiNmZmYiLz4KICA8dGV4dCB4PSI5MCIgeT0iNzgiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+QUJDPC90ZXh0PgogIDx0ZXh0IHg9IjkwIiB5PSIxMDIiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+VHJhZGluZzwvdGV4dD4KICA8cGF0aCBkPSJNNDQgMTE2IEw2NCAxMDAgTDg0IDExNiBMMTA0IDEwMCBMMTI0IDExNiBMMTM2IDEwOCIgc3Ryb2tlPSIjMjE4MDk4IiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz4KPC9zdmc+">
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9IiMyMTgwOTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMjQiIHk9IjQ4IiB3aWR0aD0iMTMyIiBoZWlnaHQ9Ijg0IiByeD0iMTIiIGZpbGw9IiNmZmYiLz4KICA8dGV4dCB4PSI5MCIgeT0iNzgiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+QUJDPC90ZXh0PgogIDx0ZXh0IHg9IjkwIiB5PSIxMDIiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+VHJhZGluZzwvdGV4dD4KICA8cGF0aCBkPSJNNDQgMTE2IEw2NCAxMDAgTDg0IDExNiBMMTA0IDEwMCBMMTI0IDExNiBMMTM2IDEwOCIgc3Ryb2tlPSIjMjE4MDk4IiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz4KPC9zdmc+">
+    
+    <!-- Favicon with multiple sizes -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0iIzIxODA5OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB4PSI0IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMTYiIHJ4PSIyIiBmaWxsPSIjZmZmIi8+CiAgPHRleHQgeD0iMTYiIHk9IjE4IiBmaWxsPSIjMjE4MDk4IiBmb250LXNpemU9IjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+QUJDPC90ZXh0Pgo8L3N2Zz4=">
+    
+    <!-- Windows Tiles -->
+    <meta name="msapplication-TileImage" content="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0IiBoZWlnaHQ9IjE0NCIgdmlld0JveD0iMCAwIDE0NCAxNDQiIGZpbGw9IiMyMTgwOTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMTgiIHk9IjM2IiB3aWR0aD0iMTA4IiBoZWlnaHQ9IjcyIiByeD0iMTAiIGZpbGw9IiNmZmYiLz4KICA8dGV4dCB4PSI3MiIgeT0iNjAiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiI+QUJDPC90ZXh0PgogIDx0ZXh0IHg9IjcyIiB5PSI4MCIgZmlsbD0iIzIxODA5OCIgZm9udC1zaXplPSIxMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIj5UcmFkaW5nPC90ZXh0PgogIDxwYXRoIGQ9Ik0zNiA5NiBMNTQgODQgTDcyIDk2IEw5MCA4NCBMMTA4IDk2IiBzdHJva2U9IiMyMTgwOTgiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4=">
+    <meta name="msapplication-square70x70logo" content="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAiIGhlaWdodD0iNzAiIHZpZXdCb3g9IjAgMCA3MCA3MCIgZmlsbD0iIzIxODA5OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB4PSI4IiB5PSIxOCIgd2lkdGg9IjU0IiBoZWlnaHQ9IjM0IiByeD0iNSIgZmlsbD0iI2ZmZiIvPgogIDx0ZXh0IHg9IjM1IiB5PSIzMCIgZmlsbD0iIzIxODA5OCIgZm9udC1zaXplPSI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiPkFCQzwvdGV4dD4KICA8dGV4dCB4PSIzNSIgeT0iNDIiIGZpbGw9IiMyMTgwOTgiIGZvbnQtc2l6ZT0iNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIj5UcmFkaW5nPC90ZXh0Pgo8L3N2Zz4=">
+    
+    <!-- Safari Pinned Tab -->
+    <link rel="mask-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0iYmxhY2siIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3QgeD0iMiIgeT0iNCIgd2lkdGg9IjEyIiBoZWlnaHQ9IjgiIHJ4PSIxIi8+CiAgPHBhdGggZD0iTTQgMTIgTDYgMTAgTDggMTIgTDEwIDEwIEwxMiAxMiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIGZpbGw9Im5vbmUiLz4KPC9zdmc+" color="#218098">
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <!-- PWA Install Banner -->
+    <div id="installBanner" class="install-banner hidden">
+        <div class="install-content">
+            <div class="install-info">
+                <h3>📱 Install ABC Trading App</h3>
+                <p>Get quick access from your home screen</p>
+            </div>
+            <div class="install-actions">
+                <button class="btn btn--primary btn--sm" id="installBtn">Install</button>
+                <button class="btn btn--outline btn--sm" id="dismissBtn">Later</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Dashboard Screen -->
     <div id="dashboard-screen" class="screen active">
         <div class="screen-header">
@@ -53,6 +100,18 @@
                     <span class="btn-icon">📋</span>
                     Create Order
                 </button>
+            </div>
+        </div>
+
+        <!-- PWA Status Indicators -->
+        <div class="pwa-status">
+            <div class="status-item">
+                <span class="status-icon" id="installStatus">📱</span>
+                <span class="status-text" id="installText">PWA Ready</span>
+            </div>
+            <div class="status-item">
+                <span class="status-icon" id="offlineStatus">🌐</span>
+                <span class="status-text" id="offlineText">Online</span>
             </div>
         </div>
     </div>
@@ -255,7 +314,7 @@
             </div>
 
             <div class="settings-section">
-                <h3>Notification Settings</h3>
+                <h3>PWA Settings</h3>
                 <div class="setting-item">
                     <label class="setting-label">
                         <input type="checkbox" checked> Low Stock Alerts
@@ -271,6 +330,52 @@
                         <input type="checkbox" checked> Order Updates
                     </label>
                 </div>
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <input type="checkbox" checked> Offline Mode
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <button class="btn btn--outline btn--sm" onclick="clearAppData()">Clear App Data</button>
+                </div>
+            </div>
+
+            <div class="pwa-info">
+                <div class="profile-card">
+                    <h3>App Information</h3>
+                    <div class="info-item">
+                        <strong>Version:</strong> 1.0.0
+                    </div>
+                    <div class="info-item">
+                        <strong>Status:</strong> <span id="connectionStatus">Online</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Last Updated:</strong> <span id="lastUpdated">Just now</span>
+                    </div>
+                    <div class="info-item">
+                        <button class="btn btn--outline btn--sm" onclick="checkForUpdates()">Check for Updates</button>
+                    </div>
+                    <div class="info-item">
+                        <strong>Installation:</strong> <span id="installationStatus">Browser</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offline Indicator -->
+    <div id="offlineIndicator" class="offline-indicator hidden">
+        <span>📵 You're offline - Some features may be limited</span>
+    </div>
+
+    <!-- Update Available Notification -->
+    <div id="updateNotification" class="update-notification hidden">
+        <div class="update-content">
+            <h4>🔄 Update Available!</h4>
+            <p>A new version is ready. Restart to update.</p>
+            <div class="update-actions">
+                <button class="btn btn--sm" onclick="reloadForUpdate()">Update Now</button>
+                <button class="btn btn--outline btn--sm" onclick="dismissUpdate()">Later</button>
             </div>
         </div>
     </div>
@@ -301,4 +406,4 @@
 
     <script src="app.js"></script>
 </body>
-</html>     
+</html>
