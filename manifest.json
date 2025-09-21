@@ -1,10 +1,10 @@
 {
   "name": "CrunchCraft - Distributor Management",
   "short_name": "CrunchCraft",
-  "description": "Complete distributor management application for ABC Trading Co. Manage inventory, track orders, handle accounts receivables, and monitor sales analytics with real-time data synchronization.",
-  "start_url": "/abc-trading-pwa/index.html",
-  "id": "/abc-trading-distributor-app",
-  "scope": "/abc-trading-pwa/"
+  "description": "Complete distributor management application for CrunchCraft. Manage inventory, track orders, handle accounts receivables, and monitor sales analytics with real-time data synchronization.",
+  "start_url": "/",
+  "id": "/abc-trading-pwa",
+  "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#fcfcf9",
@@ -15,7 +15,7 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "icon-512.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
@@ -29,9 +29,9 @@
   ],
   "screenshots": [
     {
-      "src": "screenshots/dashboard-overview.png",
+      "src": "data:image/svg+xml;base64,...",
       "sizes": "540x720",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "form_factor": "narrow",
       "label": "Dashboard Overview"
     }
